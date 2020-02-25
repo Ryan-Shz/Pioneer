@@ -30,6 +30,7 @@ import HomeListItem3 from '@/components/HomeListItem3'
 // 导入navigator模块
 const navigator = weex.requireModule('navigator')
 const modal = weex.requireModule('modal')
+import store from '@/store'
 export default {
   components: {
     HomeHeader,
@@ -47,18 +48,13 @@ export default {
   methods: {
     increase() {
       // 提交vuex状态，调用actions中的方法
-      this.$store.dispatch('increase', true);
+      store.dispatch('increase', true);
     },
     goto(){
       navigator.push({
         url: 'http://g.tbcdn.cn/amte-fe/amte-resource/0.0.8/fast/show_2.js',
         animated: 'true'
       }, event => {
-        setTimeout(()=>{
-          navigator.pop({
-            animated: 'true'
-          });
-        }, 5000)
         modal.toast({
           message: 'open a new weex page.',
           duration: 3
@@ -70,7 +66,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// 导入scss文件，就可以使用其中声明的变量
+/* 导入scss文件，就可以使用其中声明的变量 */
 @import '../assets/css/dimens.scss';
 .vuex-test-btn {
   position: fixed;

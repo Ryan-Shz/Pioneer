@@ -1,16 +1,20 @@
 <template>
-<div class="main-wrapper">
-  <personal-header></personal-header>
-  <personal-order class="order-btn"></personal-order>
-  <personal-service class="service-btn"></personal-service>
-  <text class="logout">退出登录{{storeCount}}</text>
-</div>
+  <scroller>
+    <div class="main-wrapper">
+      <personal-header></personal-header>
+      <personal-order class="order-btn"></personal-order>
+      <personal-service class="service-btn"></personal-service>
+      <text class="logout">退出登录{{storeCount}}</text>
+    </div>
+  </scroller>
 </template>
 
 <script>
 import PersonalHeader from '@/components/PersonalHeader';
 import PersonalOrder from '@/components/PersonalOrder';
 import PersonalService from '@/components/PersonalService';
+const modal = weex.requireModule('modal');
+import store from '@/store'
 export default {
   components: {
     PersonalHeader,
@@ -19,7 +23,7 @@ export default {
   },
   computed: {
     storeCount() {
-      return this.$store.state.count
+      return store.state.count
     }
   }
 };
