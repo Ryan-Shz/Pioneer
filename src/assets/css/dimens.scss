@@ -2,6 +2,7 @@
 // 在其他style块中通过 @import '../assets/css/dimens.css' 引入
 // 就可以直接使用在此scss文件中定义的变量和函数了
 $testBtnWidth: 200px;
+$testBtnHeight: 100px;
 
 @function doublePx($px) {
     @return $px * 2 + px;

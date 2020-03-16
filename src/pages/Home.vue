@@ -17,6 +17,7 @@
   <home-nav class="main-nav"></home-nav>
   <text class="vuex-test-btn" @click="increase">Vuex测试</text>
   <text class="navigator-test-btn" @click="goto">Navigator测试</text>
+  <text class="network-test-btn" @click="fetch">Network测试</text>
 </div>
 </template>
 
@@ -30,6 +31,9 @@ import HomeListItem3 from '@/components/HomeListItem3'
 // 导入navigator模块
 const navigator = weex.requireModule('navigator')
 const modal = weex.requireModule('modal')
+const stream = weex.requireModule('stream') || {}
+const apiUrl = 'https://jsonplaceholder.typicode.com/posts'
+
 import store from '@/store'
 export default {
   components: {
@@ -42,24 +46,55 @@ export default {
   },
   data() {
     return {
-      isShowNav: false
+      isShowNav: false,
+      title: 'article title',
+      content: 'article content'
     }
-  }, 
+  },
   methods: {
     increase() {
       // 提交vuex状态，调用actions中的方法
-      store.dispatch('increase', true);
+      store.dispatch('increase', true)
     },
-    goto(){
-      navigator.push({
-        url: 'http://g.tbcdn.cn/amte-fe/amte-resource/0.0.8/fast/show_2.js',
-        animated: 'true'
-      }, event => {
-        modal.toast({
-          message: 'open a new weex page.',
-          duration: 3
-        });
-      });
+    goto() {
+      navigator.push(
+        {
+          url: 'http://g.tbcdn.cn/amte-fe/amte-resource/0.0.8/fast/show_2.js',
+          animated: 'true'
+        },
+        event => {
+          modal.toast({
+            message: 'open a new weex page.',
+            duration: 3
+          })
+        }
+      )
+    },
+    fetch() {
+      const { title, content } = this
+      const body = JSON.stringify({ title, content })
+      stream.fetch(
+        {
+          method: 'POST',
+          url: apiUrl,
+          type: 'json',
+          body: body,
+          headers: { custom: 'yezhongzheng' }
+        },
+        function(ret) {
+          if (!ret.ok) {
+            modal.toast({
+              message: 'Network Error!',
+              duration: 3
+            })
+          } else {
+            modal.toast({
+              message: '提交成功!' + body,
+              duration: 3
+            })
+          }
+        }
+      )
     }
   }
 }
@@ -83,6 +118,16 @@ export default {
   width: $testBtnWidth;
   height: 100px;
   top: 310px;
+  background-color: red;
+  color: white;
+  text-align: center;
+  line-height: 100px;
+}
+.network-test-btn {
+  position: fixed;
+  width: $testBtnWidth;
+  height: 100px;
+  top: 420px;
   background-color: red;
   color: white;
   text-align: center;
